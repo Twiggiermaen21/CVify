@@ -214,12 +214,26 @@ class HtmlCVBuilder:
             </footer>
             """
 
+        # Load user's custom favoicon.ico
+        favicon_tag = '<link rel="icon" type="image/x-icon" href="/static/favoicon.ico">'
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        icon_path = os.path.join(base_dir, "web", "static", "favoicon.ico")
+        if os.path.isfile(icon_path):
+            try:
+                import base64
+                with open(icon_path, "rb") as ico_f:
+                    b64_ico = base64.b64encode(ico_f.read()).decode("ascii")
+                    favicon_tag = f'<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,{b64_ico}">\n    <link rel="shortcut icon" href="/static/favoicon.ico">'
+            except Exception:
+                pass
+
         full_html = f"""<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV - {html.escape(info.name)}</title>
+    {favicon_tag}
     <style>
         :root {{
             --primary: #1a365d;

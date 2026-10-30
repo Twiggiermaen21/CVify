@@ -5,8 +5,9 @@ Handles web interface, live preview, editing, and document generation.
 import os
 import sys
 import webbrowser
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Response
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 
 # Add workspace root to sys.path so 'core' can be imported easily
@@ -23,6 +24,7 @@ from core.html_builder import HtmlCVBuilder
 
 app = FastAPI(title="CV Studio")
 
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 SOURCE_DIR = os.path.join(ROOT_DIR, "source_cvs")
 OUTPUT_DIR = os.path.join(ROOT_DIR, "output")
 YAML_FILE = os.path.join(ROOT_DIR, "cv_profile.yaml")
@@ -30,8 +32,22 @@ JSON_FILE = os.path.join(ROOT_DIR, "cv_data.json")
 DOCX_FILE = os.path.join(OUTPUT_DIR, "nowe_cv.docx")
 HTML_FILE = os.path.join(OUTPUT_DIR, "nowe_cv.html")
 
+os.makedirs(STATIC_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(SOURCE_DIR, exist_ok=True)
+
+# Mount static folder
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+@app.get("/favicon.ico", include_in_schema=False)
+@app.get("/favoicon.ico", include_in_schema=False)
+@app.get("/favicon.svg", include_in_schema=False)
+async def get_favicon_ico():
+    for name in ("favoicon.ico", "favicon.ico"):
+        ico_path = os.path.join(STATIC_DIR, name)
+        if os.path.isfile(ico_path):
+            return FileResponse(ico_path, media_type="image/x-icon")
+    raise HTTPException(status_code=404, detail="Brak pliku favoicon.ico")
 
 def get_current_cv() -> CVData:
     """Loads CV from YAML (preferred), JSON, or extracts from source files if needed."""
