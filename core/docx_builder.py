@@ -11,7 +11,10 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from models import CVData
+try:
+    from .models import CVData
+except ImportError:
+    from models import CVData
 
 # Color Palette Constants
 COLOR_NAVY_HEX = "1A365D"

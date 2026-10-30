@@ -23,7 +23,6 @@ class DocumentReader:
 
         for page_idx, page in enumerate(reader.pages):
             text = page.extract_text() or ""
-            # Split lines and clean whitespace
             raw_lines = text.split("\n")
             for line in raw_lines:
                 clean_l = line.strip()
@@ -50,26 +49,21 @@ class DocumentReader:
             if text:
                 extracted_lines.append(text)
 
-        # 2. Read tables (many CV templates use 2-column or 1-row table layout)
-        # To preserve column coherence (e.g. sidebar first, then main content),
-        # we inspect table column blocks.
+        # 2. Read tables (preserving multi-column structure)
         for table in doc.tables:
             num_rows = len(table.rows)
             num_cols = len(table.columns)
 
             if num_rows == 1 and num_cols > 1:
-                # Common 2-column resume: left column (cell 0), right column (cell 1)
                 for cell in table.rows[0].cells:
                     for p in cell.paragraphs:
                         text = p.text.strip()
                         if text:
                             extracted_lines.append(text)
             else:
-                # General table: iterate rows, then cells
                 visited_cells = set()
                 for row in table.rows:
                     for cell in row.cells:
-                        # Avoid duplicate text in merged cells
                         cell_id = id(cell._tc)
                         if cell_id in visited_cells:
                             continue
@@ -98,22 +92,30 @@ class DocumentReader:
             raise ValueError(f"Nieobsługiwany format pliku: {ext}. Obsługiwane to: .pdf, .docx")
 
     @classmethod
-    def discover_files(cls, directory: str = ".") -> List[str]:
+    def discover_files(cls, directory: str = "source_cvs") -> List[str]:
         """
-        Finds all .pdf and .docx CV files in the given directory,
-        ignoring temporary files (like ~$temp.docx) and already generated CV files.
+        Finds all .pdf and .docx CV files in the given directory (default: source_cvs),
+        or falls back to root '.' if source_cvs is empty or doesn't exist.
+        Ignores temporary files (like ~$temp.docx) and already generated CV files.
         """
-        discovered = []
-        for filename in os.listdir(directory):
-            if filename.startswith("~$") or filename.startswith("."):
-                continue
-            lower = filename.lower()
-            if lower.endswith((".pdf", ".docx")):
-                # Don't pick up our own generated files to prevent recursion
-                if "nowe_cv" in lower or "wygenerowane_cv" in lower or "generated_cv" in lower:
-                    continue
-                full_path = os.path.join(directory, filename)
-                if os.path.isfile(full_path):
-                    discovered.append(full_path)
-        return sorted(discovered)
+        search_dirs = [directory]
+        if directory != ".":
+            search_dirs.append(".")
 
+        for d in search_dirs:
+            if not os.path.isdir(d):
+                continue
+            discovered = []
+            for filename in os.listdir(d):
+                if filename.startswith("~$") or filename.startswith("."):
+                    continue
+                lower = filename.lower()
+                if lower.endswith((".pdf", ".docx")):
+                    if "nowe_cv" in lower or "wygenerowane_cv" in lower or "generated_cv" in lower:
+                        continue
+                    full_path = os.path.join(d, filename)
+                    if os.path.isfile(full_path):
+                        discovered.append(full_path)
+            if discovered:
+                return sorted(discovered)
+        return []

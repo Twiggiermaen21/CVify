@@ -5,7 +5,10 @@ Opening this file in any browser allows 1-click printing or saving as a clean PD
 """
 import os
 import html
-from models import CVData
+try:
+    from .models import CVData
+except ImportError:
+    from models import CVData
 
 class HtmlCVBuilder:
     def __init__(self, cv_data: CVData):

@@ -4,10 +4,16 @@ Supports Polish and English CV headers and formats.
 """
 import re
 from typing import List, Dict, Tuple, Optional
-from models import (
-    CVData, PersonalInfo, ExperienceItem, StartupItem, 
-    EducationItem, ProjectItem, LanguageItem
-)
+try:
+    from .models import (
+        CVData, PersonalInfo, ExperienceItem, StartupItem, 
+        EducationItem, ProjectItem, LanguageItem
+    )
+except ImportError:
+    from models import (
+        CVData, PersonalInfo, ExperienceItem, StartupItem, 
+        EducationItem, ProjectItem, LanguageItem
+    )
 
 # Regex patterns for detecting section headers
 SECTION_PATTERNS = [

@@ -4,10 +4,16 @@ Deduplicates entries, fills missing fields, and combines skills and projects.
 """
 from typing import List, Dict
 import re
-from models import (
-    CVData, PersonalInfo, ExperienceItem, StartupItem, 
-    EducationItem, ProjectItem, LanguageItem
-)
+try:
+    from .models import (
+        CVData, PersonalInfo, ExperienceItem, StartupItem, 
+        EducationItem, ProjectItem, LanguageItem
+    )
+except ImportError:
+    from models import (
+        CVData, PersonalInfo, ExperienceItem, StartupItem, 
+        EducationItem, ProjectItem, LanguageItem
+    )
 
 class CVMerger:
     @classmethod

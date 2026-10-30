@@ -1,10 +1,6 @@
 """
 FastAPI Server for CV Studio Web UI.
-Provides REST API endpoints for:
-- Viewing and editing CV data interactively
-- Real-time live HTML preview
-- Importing / exporting YAML (ideal for AI prompt engineering)
-- Instant generation and download of .docx and .pdf
+Handles web interface, live preview, editing, and document generation.
 """
 import os
 import sys
@@ -13,19 +9,29 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 import uvicorn
 
-from models import CVData
-from reader import DocumentReader
-from parser import CVParser
-from merger import CVMerger
-from docx_builder import DocxCVBuilder
-from html_builder import HtmlCVBuilder
+# Add workspace root to sys.path so 'core' can be imported easily
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
+from core.models import CVData
+from core.reader import DocumentReader
+from core.parser import CVParser
+from core.merger import CVMerger
+from core.docx_builder import DocxCVBuilder
+from core.html_builder import HtmlCVBuilder
 
 app = FastAPI(title="CV Studio")
 
-YAML_FILE = "cv_profile.yaml"
-JSON_FILE = "cv_data.json"
-DOCX_FILE = "nowe_cv.docx"
-HTML_FILE = "nowe_cv.html"
+SOURCE_DIR = os.path.join(ROOT_DIR, "source_cvs")
+OUTPUT_DIR = os.path.join(ROOT_DIR, "output")
+YAML_FILE = os.path.join(ROOT_DIR, "cv_profile.yaml")
+JSON_FILE = os.path.join(ROOT_DIR, "cv_data.json")
+DOCX_FILE = os.path.join(OUTPUT_DIR, "nowe_cv.docx")
+HTML_FILE = os.path.join(OUTPUT_DIR, "nowe_cv.html")
+
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+os.makedirs(SOURCE_DIR, exist_ok=True)
 
 def get_current_cv() -> CVData:
     """Loads CV from YAML (preferred), JSON, or extracts from source files if needed."""
@@ -43,8 +49,8 @@ def get_current_cv() -> CVData:
         except Exception as e:
             print(f"Błąd czytania {JSON_FILE}: {e}")
 
-    # Fallback: scan files
-    files = DocumentReader.discover_files(".")
+    # Fallback: scan files in source_cvs (or root)
+    files = DocumentReader.discover_files(SOURCE_DIR)
     if files:
         cv_list = [CVParser.parse(DocumentReader.read_file(f)) for f in files]
         merged = CVMerger.merge(cv_list)
@@ -54,7 +60,7 @@ def get_current_cv() -> CVData:
     return CVData()
 
 def save_cv_to_disk(cv: CVData):
-    """Saves to YAML, JSON, and regenerates DOCX and HTML."""
+    """Saves to YAML & JSON in root, and generates DOCX & HTML in output/."""
     # 1. YAML
     with open(YAML_FILE, "w", encoding="utf-8") as f:
         f.write(cv.to_yaml())
@@ -63,11 +69,11 @@ def save_cv_to_disk(cv: CVData):
     with open(JSON_FILE, "w", encoding="utf-8") as f:
         f.write(cv.to_json(indent=2))
 
-    # 3. DOCX
+    # 3. DOCX in output/
     docx_builder = DocxCVBuilder(cv)
     docx_builder.build(DOCX_FILE)
 
-    # 4. HTML
+    # 4. HTML in output/
     html_builder = HtmlCVBuilder(cv)
     html_builder.build(HTML_FILE)
 
@@ -103,8 +109,7 @@ async def api_preview_html(request: Request):
         data = await request.json()
         cv = CVData.from_dict(data)
         builder = HtmlCVBuilder(cv)
-        # We can build directly to memory or temp file
-        temp_html_path = "temp_preview.html"
+        temp_html_path = os.path.join(OUTPUT_DIR, "temp_preview.html")
         builder.build(temp_html_path)
         with open(temp_html_path, "r", encoding="utf-8") as f:
             content = f.read()
@@ -134,9 +139,9 @@ async def api_from_yaml(request: Request):
 @app.post("/api/reload-files")
 async def api_reload_files():
     try:
-        files = DocumentReader.discover_files(".")
+        files = DocumentReader.discover_files(SOURCE_DIR)
         if not files:
-            return {"ok": False, "error": "Nie znaleziono plików PDF/DOCX w katalogu"}
+            return {"ok": False, "error": f"Nie znaleziono plików PDF/DOCX w katalogu {SOURCE_DIR}"}
         cv_list = [CVParser.parse(DocumentReader.read_file(f)) for f in files]
         merged = CVMerger.merge(cv_list)
         save_cv_to_disk(merged)
@@ -168,4 +173,3 @@ def run_server(host: str = "127.0.0.1", port: int = 8000, open_browser: bool = T
 
 if __name__ == "__main__":
     run_server()
-
