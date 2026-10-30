@@ -1,12 +1,11 @@
 """
-Główny program CLI do ekstrakcji danych z CV (PDF / Word DOCX)
-oraz generowania nowego, nowoczesnego CV na podstawie starych plików.
+Główny program CLI i interfejs do ekstrakcji oraz generowania CV.
 
-Użycie:
-    python main.py                     - Automatyczne skanowanie katalogu, scalenie i wygenerowanie nowego CV (.docx i .html)
-    python main.py extract             - Tylko ekstrakcja i zapis do cv_data.json
-    python main.py build               - Wygenerowanie nowego CV z pliku cv_data.json
-    python main.py plik1.pdf plik2.docx - Ekstrakcja ze wskazanych plików
+Dostępne polecenia:
+    python main.py          - Automatyczna ekstrakcja ze starych CV i wygenerowanie nowego profilu
+    python main.py ui       - Uruchomienie interaktywnego panelu Web UI z edytorem i podglądem na żywo
+    python main.py extract  - Tylko ekstrakcja ze starych plików do cv_profile.yaml i cv_data.json
+    python main.py build    - Wygenerowanie plików Word (.docx) i HTML z pliku cv_profile.yaml / cv_data.json
 """
 import sys
 import os
@@ -28,6 +27,11 @@ from parser import CVParser
 from merger import CVMerger
 from docx_builder import DocxCVBuilder
 from html_builder import HtmlCVBuilder
+
+YAML_DEFAULT = "cv_profile.yaml"
+JSON_DEFAULT = "cv_data.json"
+DOCX_DEFAULT = "nowe_cv.docx"
+HTML_DEFAULT = "nowe_cv.html"
 
 def print_banner():
     print("=" * 65)
@@ -82,20 +86,31 @@ def print_summary(cv: CVData):
     print(f"  • Języki obce:       {', '.join(f'{l.language} ({l.level})' for l in cv.languages)}")
     print("-" * 65)
 
-def save_json(cv: CVData, path: str = "cv_data.json"):
-    with open(path, "w", encoding="utf-8") as f:
+def save_profile_files(cv: CVData, yaml_path: str = YAML_DEFAULT, json_path: str = JSON_DEFAULT):
+    # Save YAML (preferred for AI and human editing)
+    with open(yaml_path, "w", encoding="utf-8") as f:
+        f.write(cv.to_yaml())
+    print(f"💾 Zapisano profil AI-friendly (YAML): {yaml_path}")
+
+    # Save JSON (for tool interoperability)
+    with open(json_path, "w", encoding="utf-8") as f:
         f.write(cv.to_json(indent=2))
-    print(f"💾 Zapisano ustrukturyzowane dane do: {path}")
+    print(f"💾 Zapisano bazę danych (JSON):         {json_path}")
 
-def load_json(path: str = "cv_data.json") -> CVData:
-    if not os.path.isfile(path):
-        print(f"❌ Plik {path} nie istnieje!")
+def load_profile_file(yaml_path: str = YAML_DEFAULT, json_path: str = JSON_DEFAULT) -> CVData:
+    if os.path.isfile(yaml_path):
+        print(f"\n📖 Wczytywanie profilu z pliku YAML: {yaml_path} ...")
+        with open(yaml_path, "r", encoding="utf-8") as f:
+            return CVData.from_yaml(f.read())
+    elif os.path.isfile(json_path):
+        print(f"\n📖 Wczytywanie profilu z pliku JSON: {json_path} ...")
+        with open(json_path, "r", encoding="utf-8") as f:
+            return CVData.from_json(f.read())
+    else:
+        print(f"❌ Nie znaleziono ani pliku {yaml_path}, ani {json_path}!")
         sys.exit(1)
-    with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    return CVData.from_dict(data)
 
-def generate_documents(cv: CVData, docx_path: str = "nowe_cv.docx", html_path: str = "nowe_cv.html"):
+def generate_documents(cv: CVData, docx_path: str = DOCX_DEFAULT, html_path: str = HTML_DEFAULT):
     print("\n📄 Generowanie nowoczesnego CV w formatach DOCX i HTML...")
     
     # 1. DOCX
@@ -113,20 +128,27 @@ def main():
         description="Program do ekstrakcji danych z PDF/Word i tworzenia nowego CV na ich podstawie."
     )
     parser.add_argument("command", nargs="?", default="run", 
-                        choices=["run", "extract", "build"], 
-                        help="Akcja do wykonania: run (domyślnie: ekstrakt + budowa), extract (tylko json), build (budowa z json)")
+                        choices=["run", "extract", "build", "ui", "web"], 
+                        help="Akcja: run (ekstrakt + generowanie), ui (panel graficzny w przeglądarce), extract (tylko yaml/json), build (generowanie z yaml/json)")
     parser.add_argument("files", nargs="*", help="Opcjonalna lista plików CV do przetworzenia (.pdf, .docx)")
-    parser.add_argument("--json", default="cv_data.json", help="Ścieżka do pliku JSON (domyślnie: cv_data.json)")
-    parser.add_argument("--docx-out", default="nowe_cv.docx", help="Nazwa wyjściowego pliku Word (domyślnie: nowe_cv.docx)")
-    parser.add_argument("--html-out", default="nowe_cv.html", help="Nazwa wyjściowego pliku HTML (domyślnie: nowe_cv.html)")
+    parser.add_argument("--yaml", default=YAML_DEFAULT, help="Ścieżka do pliku YAML (domyślnie: cv_profile.yaml)")
+    parser.add_argument("--json", default=JSON_DEFAULT, help="Ścieżka do pliku JSON (domyślnie: cv_data.json)")
+    parser.add_argument("--docx-out", default=DOCX_DEFAULT, help="Nazwa wyjściowego pliku Word (domyślnie: nowe_cv.docx)")
+    parser.add_argument("--html-out", default=HTML_DEFAULT, help="Nazwa wyjściowego pliku HTML (domyślnie: nowe_cv.html)")
 
     args = parser.parse_args()
 
-    print_banner()
-
     cmd = args.command
 
-    # If user provided file paths directly as arguments
+    # UI Command
+    if cmd in ("ui", "web"):
+        from server import run_server
+        print_banner()
+        run_server(host="127.0.0.1", port=8000, open_browser=True)
+        return
+
+    print_banner()
+
     target_files = args.files
     if not target_files and cmd != "build":
         target_files = DocumentReader.discover_files(".")
@@ -136,32 +158,32 @@ def main():
             sys.exit(1)
 
     if cmd == "build":
-        print(f"\n📖 Wczytywanie danych z pliku: {args.json} ...")
-        cv = load_json(args.json)
+        cv = load_profile_file(args.yaml, args.json)
         print_summary(cv)
         generate_documents(cv, args.docx_out, args.html_out)
-        print("\n🎉 Sukces! Nowe CV zostało wygenerowane.")
+        print("\n🎉 Sukces! Nowe CV zostało wygenerowane na podstawie pliku profilu.")
 
     elif cmd == "extract":
         cv = extract_and_merge(target_files)
         print_summary(cv)
-        save_json(cv, args.json)
-        print(f"\n💡 Możesz teraz przejrzeć i dostosować dane w pliku {args.json},")
+        save_profile_files(cv, args.yaml, args.json)
+        print(f"\n💡 Możesz teraz przejrzeć i dostosować dane w pliku {args.yaml} (lub poprosić AI o edycję),")
         print("   a następnie uruchomić: python main.py build")
+        print("   lub uruchomić panel graficzny: python main.py ui")
 
     elif cmd == "run":
         # Full end-to-end pipeline
         cv = extract_and_merge(target_files)
         print_summary(cv)
-        save_json(cv, args.json)
+        save_profile_files(cv, args.yaml, args.json)
         generate_documents(cv, args.docx_out, args.html_out)
         print("\n" + "=" * 65)
         print("🎉 GOTOWE! Nowe CV zostało wygenerowane na podstawie starych plików!")
-        print(f"   1. Plik Word (.docx):   {args.docx_out}  (gotowy do edycji i wysyłki)")
-        print(f"   2. Plik HTML / PDF:     {args.html_out}  (otwórz w przeglądarce i naciśnij Ctrl+P)")
-        print(f"   3. Baza danych JSON:    {args.json}      (Twoje dane w czystym formacie)")
+        print(f"   1. Format dla AI / Edycji: {args.yaml}  (czytelny YAML do edycji przez Ciebie lub prompt AI)")
+        print(f"   2. Plik Word (.docx):       {args.docx_out}  (gotowy do edycji i wysyłki)")
+        print(f"   3. Plik HTML / PDF:         {args.html_out}  (otwórz w przeglądarce i naciśnij Ctrl+P)")
+        print("   4. Panel graficzny (UI):    uruchom wpisując: python main.py ui")
         print("=" * 65)
 
 if __name__ == "__main__":
     main()
-
