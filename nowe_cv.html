@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Kacper Pudełko</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #2b6cb0;
+            --accent-light: #ebf8ff;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --bg-pill: #edf2f7;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-dark);
+            background: #f7fafc;
+            line-height: 1.5;
+            padding: 24px 12px;
+        }
+
+        .cv-container {
+            max-width: 860px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px 48px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+        }
+
+        .header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .name {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 2px;
+            margin-bottom: 8px;
+        }
+
+        .contact-bar {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .contact-bar a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .contact-bar a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 1.5px solid var(--primary);
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-content p {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            text-align: justify;
+        }
+
+        .entry-card {
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .entry-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .entry-title.accent {
+            color: var(--accent);
+        }
+
+        .entry-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .entry-date {
+            font-size: 12px;
+            font-style: italic;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .bullet-list {
+            list-style-type: disc;
+            margin-left: 20px;
+            font-size: 12.5px;
+            color: var(--text-dark);
+        }
+
+        .bullet-list li {
+            margin-bottom: 3px;
+        }
+
+        .proj-link {
+            font-size: 12px;
+            color: var(--accent);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .proj-link:hover {
+            text-decoration: underline;
+        }
+
+        .tech-badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 4px 0;
+        }
+
+        .tech-badge {
+            font-size: 11px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 500;
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid #bee3f8;
+        }
+
+        .proj-desc {
+            font-size: 12.5px;
+            color: var(--text-dark);
+            margin-top: 3px;
+            text-align: justify;
+        }
+
+        .skills-block {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .skill-category-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .skill-cat-name {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 140px;
+        }
+
+        .skill-pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .skill-pill {
+            font-size: 12px;
+            background: var(--bg-pill);
+            color: var(--text-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .skill-pill.soft {
+            background: #f7fafc;
+            font-size: 11.5px;
+        }
+
+        .languages-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .lang-tag {
+            font-size: 12.5px;
+            background: var(--bg-pill);
+            padding: 3px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .rodo-footer {
+            margin-top: 28px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+            font-size: 10.5px;
+            color: var(--text-muted);
+            font-style: italic;
+            text-align: justify;
+            line-height: 1.4;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(43, 108, 176, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .print-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 12mm 14mm;
+            }
+
+            body {
+                background: none;
+                padding: 0;
+            }
+
+            .cv-container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+                border-radius: 0;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">🖨️ Drukuj / Zapisz jako PDF</button>
+    <div class="cv-container">
+        <header class="header">
+            <h1 class="name">Kacper Pudełko</h1>
+            <div class="title">Full Stack Software Engineer</div>
+            <div class="contact-bar"><span>📍 Pszczyna</span> &bull; <span>📞 <a href="tel:516 278 624">516 278 624</a></span> &bull; <span>✉️ <a href="mailto:kacper.pudelko.kpk@gmail.com">kacper.pudelko.kpk@gmail.com</a></span> &bull; <span>💼 <a href="https://www.linkedin.com/in/kacperpudelko" target="_blank">linkedin.com/in/kacperpudelko</a></span> &bull; <span>🐙 <a href="https://github.com/Twiggiermaen21" target="_blank">github.com/Twiggiermaen21</a></span> &bull; <span>🚗 Prawo jazdy: B2</span></div>
+        </header>
+
+        
+            <section class="section">
+                <h2 class="section-title">Profil zawodowy</h2>
+                <div class="summary-content"><p>Absolwent studiów informatycznych na Uniwersytecie Śląskim w Katowicach, Inżynier Full Stack Software Engineer z silnym zainteresowaniem programowaniem i elektroniką.</p><p>Aktywnie rozwijam własny startup, zdobywając praktyczne doświadczenie w projektowaniu oraz wdrażaniu aplikacji end-to-end. W ramach programu Erasmus+ studiowałem w Hiszpanii i we Włoszech, co pozwoliło mi rozwinąć umiejętności pracy w międzynarodowym środowisku. Szybko przyswajam nowe technologie i chętnie podejmuję się nowych wyzwań. Cechuje mnie ambicja, rzetelność oraz umiejętność efektywnej pracy zarówno samodzielnie, jak i w zespole.</p><p>Poza programowaniem pasjonuję się elektroniką oraz technicznymi aspektami serwerów i infrastruktury sieciowej. W domu samodzielnie złożyłem własny homelab z serwerem, na którym eksperymentuję z wirtualizacją, konteneryzacją i usługami self-hosted.</p><p>Naprawiam domową elektronikę oraz projektuję i montuję inteligentne urządzenia IoT, automatyzując własny smart home.</p></div>
+            </section>
+            
+        
+            <section class="section">
+                <h2 class="section-title">Doświadczenie zawodowe</h2>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div>
+                            <span class="entry-title">Praktykant - testowanie i projektowanie aplikacji webowych</span>
+                            <span class="entry-subtitle"> | Infinite Sp. z o.o., Lublin</span>
+                        </div>
+                        <span class="entry-date">08.2024 - 09.2024</span>
+                    </div>
+                    <ul class="bullet-list"><li>Testowanie aplikacji webowych.</li><li>Projektowanie aplikacji webowych.</li></ul>
+                </div>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div>
+                            <span class="entry-title">Praktykant - projektowanie aplikacji webowych</span>
+                            <span class="entry-subtitle"> | Orocz.com, Tychy</span>
+                        </div>
+                        <span class="entry-date">07.2024 - 08.2024</span>
+                    </div>
+                    <ul class="bullet-list"><li>Projektowanie aplikacji webowych.</li><li>Tworzenie architektury systemu, pomysłu i user stories.</li><li>Modelowanie diagramów UML oraz definiowanie MVP.</li></ul>
+                </div>
+                
+            </section>
+            
+        
+            <section class="section">
+                <h2 class="section-title">Start-up & Własne Inicjatywy</h2>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <span class="entry-title accent">AI-Powered Expense Tracker</span>
+                    </div>
+                    <ul class="bullet-list"><li>Autorska aplikacja webowa wykorzystująca sztuczną inteligencję do skanowania i analizy faktur kosztowych.</li><li>Budowa silnika odpowiedzialnego za logikę biznesową i przetwarzanie danych strukturalnych z obrazów/PDF.</li><li>Implementacja frontendu skupionego na czytelnej prezentacji danych finansowych i zarządzaniu budżetem w czasie rzeczywistym.</li></ul>
+                </div>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <span class="entry-title accent">iusfully</span>
+                    </div>
+                    <ul class="bullet-list"><li>Aplikacja dla prawników do przygotowywania i przechowywania dokumentów.</li><li>Tworzenie interaktywnych dokumentów z dynamicznymi polami i szablonami.</li><li>Bezpieczne zarządzanie danymi klientów oraz archiwizacja spraw prawnych.</li></ul>
+                </div>
+                
+            </section>
+            
+        
+            <section class="section">
+                <h2 class="section-title">Wybrane Projekty</h2>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <span class="entry-title">Neocal AI</span>
+                        <a class="proj-link" href="https://github.com/Twiggiermaen21/Neocal_AI" target="_blank">🔗 https://github.com/Twiggiermaen21/Neocal_AI</a>
+                    </div>
+                    <div class="tech-badges-container"><span class="tech-badge">React</span><span class="tech-badge">Vite</span><span class="tech-badge">Django</span><span class="tech-badge">PostgreSQL</span><span class="tech-badge">Docker</span><span class="tech-badge">Together AI</span><span class="tech-badge">Cloudinary</span></div>
+                    <p class="proj-desc">Aplikacja webowa do generowania spersonalizowanych kalendarzy trójdzielnych z grafikami AI generowanymi przez FLUX.1 i LLM, gotowych do profesjonalnego druku. Automatyczny upscaling grafik do rozdzielczości drukarskiej (300 DPI) oraz eksport PDF w przestrzeni barw CMYK. Eksport plików PDF w przestrzeni barw CMYK z uwierzytelnianiem JWT i Google OAuth 2.0.</p>
+                </div>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <span class="entry-title">PetWalk</span>
+                        <a class="proj-link" href="https://github.com/Twiggiermaen21/PetWalk" target="_blank">🔗 https://github.com/Twiggiermaen21/PetWalk</a>
+                    </div>
+                    <div class="tech-badges-container"><span class="tech-badge">React Native</span><span class="tech-badge">Expo</span><span class="tech-badge">Next.js</span><span class="tech-badge">Node.js</span><span class="tech-badge">MongoDB</span><span class="tech-badge">Cloudinary</span></div>
+                    <p class="proj-desc">Platforma mobilna i webowa do organizowania i śledzenia spacerów z psami. Śledzenie trasy w czasie rzeczywistym (mapa, czas, prędkość, dystans), historia spacerów i profil psów. Architektura trójwarstwowa: aplikacja mobilna (Expo), REST API (Node.js/Express) i panel webowy (Next.js).</p>
+                </div>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <span class="entry-title">DataExtractAI</span>
+                        <a class="proj-link" href="https://github.com/Twiggiermaen21/DataExtractAI" target="_blank">🔗 https://github.com/Twiggiermaen21/DataExtractAI</a>
+                    </div>
+                    <div class="tech-badges-container"><span class="tech-badge">Python</span><span class="tech-badge">Flask</span><span class="tech-badge">JavaScript</span><span class="tech-badge">Tailwind CSS</span><span class="tech-badge">Docker</span><span class="tech-badge">JSON</span></div>
+                    <p class="proj-desc">Aplikacja webowa automatyzująca przenoszenie danych z systemów OCR do profesjonalnych szablonów HTML/PDF. Inteligentny algorytm dopasowywania słów kluczowych z bloków tekstowych OCR do pól formularza. Podgląd dokumentu w czasie rzeczywistym, eksport PDF z zachowaniem stylów CSS, wdrożenie przez Docker.</p>
+                </div>
+                
+            </section>
+            
+        
+            <section class="section">
+                <h2 class="section-title">Umiejętności i Technologie</h2>
+                <div class="skills-block">
+                    
+                    <div class="skill-category-row">
+                        <span class="skill-cat-name">Frontend:</span>
+                        <div class="skill-pill-group"><span class="skill-pill">React (Vite.js, Next.sj)</span><span class="skill-pill">HTML/CSS</span><span class="skill-pill">Tailwind CSS</span></div>
+                    </div>
+                    
+                    <div class="skill-category-row">
+                        <span class="skill-cat-name">Backend:</span>
+                        <div class="skill-pill-group"><span class="skill-pill">Python</span><span class="skill-pill">Django</span><span class="skill-pill">FastAPI</span><span class="skill-pill">Flask</span><span class="skill-pill">PyTorch</span><span class="skill-pill">PHP</span><span class="skill-pill">Java</span><span class="skill-pill">C++</span></div>
+                    </div>
+                    
+                    <div class="skill-category-row">
+                        <span class="skill-cat-name">Bazy danych:</span>
+                        <div class="skill-pill-group"><span class="skill-pill">SQL</span><span class="skill-pill">PostgreSQL</span><span class="skill-pill">MongoDB</span></div>
+                    </div>
+                    
+                    <div class="skill-category-row">
+                        <span class="skill-cat-name">Narzędzia &amp; DevOps:</span>
+                        <div class="skill-pill-group"><span class="skill-pill">Docker</span><span class="skill-pill">Git</span><span class="skill-pill">GitHub</span><span class="skill-pill">VS Code</span><span class="skill-pill">Windows</span><span class="skill-pill">Linux</span></div>
+                    </div>
+                    
+                    
+                <div class="skill-category-row" style="margin-top: 8px;">
+                    <span class="skill-cat-name">Umiejętności miękkie:</span>
+                    <div class="skill-pill-group"><span class="skill-pill soft">Silna motywacja do pracy</span><span class="skill-pill soft">Umiejętność organizowania pracy własnej</span><span class="skill-pill soft">Dobra organizacja pracy</span><span class="skill-pill soft">Umiejętność szybkiego uczenia się</span><span class="skill-pill soft">Odpowiedzialność za powierzone zadania</span><span class="skill-pill soft">Gotowość do nauki</span><span class="skill-pill soft">Rozwiązywanie problemów</span><span class="skill-pill soft">Zarządzanie czasem</span><span class="skill-pill soft">Praca w zespole</span></div>
+                </div>
+                
+                </div>
+            </section>
+            
+        
+            <section class="section">
+                <h2 class="section-title">Wykształcenie</h2>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div>
+                            <span class="entry-title">Inżynier Informatyki: Programowanie aplikacji webowych</span>
+                            <div class="entry-subtitle">Uniwersytet Śląski w Katowicach</div>
+                        </div>
+                        <span class="entry-date">10.2022 - 04.2026</span>
+                    </div>
+                </div>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div>
+                            <span class="entry-title">Erasmus+: Projektowanie i administrowanie baz danych i sieci</span>
+                            <div class="entry-subtitle">Universidad de Huelva - Hiszpania</div>
+                        </div>
+                        <span class="entry-date">09.2025 - 02.2026</span>
+                    </div>
+                </div>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div>
+                            <span class="entry-title">Erasmus+: Projektowanie i administrowanie baz danych i sieci</span>
+                            <div class="entry-subtitle">Università degli Studi dell&#x27;Aquila - Włochy</div>
+                        </div>
+                        <span class="entry-date">09.2024 - 02.2025</span>
+                    </div>
+                </div>
+                
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <div>
+                            <span class="entry-title">III Liceum Ogólnokształcące: matematyka - fizyka - informatyka</span>
+                            <div class="entry-subtitle">III Liceum Ogólnokształcące w Zespole Szkół nr 1 - Pszczyna</div>
+                        </div>
+                        <span class="entry-date">01.2019 - 01.2022</span>
+                    </div>
+                </div>
+                
+            </section>
+            
+        
+            <section class="section">
+                <h2 class="section-title">Języki obce</h2>
+                <div class="languages-row"><span class="lang-tag"><b>Polski</b>: Język ojczysty</span><span class="lang-tag"><b>Angielski</b>: Wyższy średnio zaawansowany (B2)</span><span class="lang-tag"><b>Hiszpański</b>: Początkujący (A1)</span></div>
+            </section>
+            
+        
+            <footer class="rodo-footer">
+                <p>Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb niezbędnych do realizacji procesu rekrutacji (zgodnie z ustawą z dnia 10 maja 2018 roku o ochronie danych osobowych (Dz. Ustaw z 2018, poz. 1000) oraz zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (RODO)).</p>
+            </footer>
+            
+    </div>
+</body>
+</html>
