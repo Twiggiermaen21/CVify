@@ -29,6 +29,7 @@ class PersonalInfo:
     github: str = ""
     portfolio: str = ""
     driver_license: str = ""
+    photo: str = ""
 
 @dataclass
 class ExperienceItem:
@@ -81,6 +82,9 @@ class CVData:
     languages: List[LanguageItem] = field(default_factory=list)
     certifications: List[str] = field(default_factory=list)
     clause: str = ""
+    template: str = "modern"
+    theme_primary: str = "#1a365d"
+    theme_accent: str = "#2b6cb0"
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -123,7 +127,10 @@ class CVData:
             projects=projects,
             languages=languages,
             certifications=data.get("certifications", []),
-            clause=data.get("clause", "")
+            clause=data.get("clause", ""),
+            template=data.get("template", "modern"),
+            theme_primary=data.get("theme_primary", "#1a365d"),
+            theme_accent=data.get("theme_accent", "#2b6cb0"),
         )
 
     @classmethod

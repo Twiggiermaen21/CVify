@@ -44,6 +44,50 @@ d:\visualstudio\!cv\
 
 ---
 
+## 🎨 Dostępne szablony CV (Odwzorowane wzory ze zdjęć + klasyczne)
+
+### 🌟 4 wierne odwzorowania szablonów ze zdjęć:
+1. **⬛ Onyx Dark (`onyx`)** *(Wzór 1: Laura Kubiak w czerni)*:
+   - Głęboko czarny lewy sidebar ze zdjęciem o zaokrąglonych rogach.
+   - Białe sekcje i ikony kontaktowe w okręgach.
+   - Prawa kolumna z charakterystycznymi checkmarkami (`✔`) przy każdym stanowisku i umiejętności.
+2. **🌸 Blush Pastel (`blush`)** *(Wzór 2: Laura Kubiak w ciepłym beżu)*:
+   - Ciepły beżowy / pastelowy sidebar z okrągłym zdjęciem w podwójnej obwódce.
+   - Nagłówki sekcji z okrągłymi ikonami (💼 `DOŚWIADCZENIE`, 🎓 `WYKSZTAŁCENIE`, ⭐ `UMIEJĘTNOŚCI`) i pełną linią rozdzielającą.
+   - Daty pracy wyrównane do prawej krawędzi, delikatna ciepła typografia.
+3. **🟡 Creative Agency (`creative`)** *(Wzór 3: Anne Robertson - żółty łuk)*:
+   - Charakterystyczny żółty łuk (`#f5b800`) na górze lewej kolumny pod zdjęciem.
+   - Nowoczesne nagłówki z podkreślnikiem (`JOB EXPERIENCE_`, `CONTACT_`, `SKILLS_`).
+   - Wskaźniki poziomu umiejętności w formie gwiazdek/kropek.
+4. **🔲 Technical Boxes (`boxes`)** *(Wzór 4: Adam Paprocki - siatkowy)*:
+   - Prostokątne zdjęcie w prawym górnym rogu.
+   - Nagłówki w ramkach (`doświadczenie`, `edukacja`, `umiejętności`) oraz przerywane obramowania wpisów.
+   - **Wizualne suwaki poziomu języków** (pozioma szyna z ruchomym suwakiem) odzwierciedlające poziom biegłości (A1–C2/ojczysty).
+
+### 📐 Dodatkowe uniwersalne szablony:
+5. **🎨 Modern (`modern`)**: Czysty jednokolumnowy styl ze współczesnymi badge'ami.
+6. **📊 Sidebar (`sidebar`)**: Granatowy klasyczny układ 2-kolumnowy z dark sidebar.
+7. **📜 Classic (`classic`)**: Tradycyjny wycentrowany nagłówek z podwójną linią (ATS-safe).
+8. **✨ Elegant (`elegant`)**: Przestrzenny minimalizm z akcentem po lewej stronie.
+9. **📐 Compact (`compact`)**: Układ o wysokiej gęstości danych.
+
+### 📸 Zdjęcie profilowe:
+- W panelu Web UI możesz jednym kliknięciem wybrać plik JPG/PNG ze zdjęciem.
+- Zdjęcie jest automatycznie skalowane, kadrowane do okręgu i osadzane jako self-contained base64 (działa offline i w PDF).
+- Zdjęcie jest także wstawiane do generowanego dokumentu Word DOCX!
+
+### 🎨 Personalizacja kolorów:
+- Możesz wybrać dowolny kolor główny (`theme_primary`) i akcentowy (`theme_accent`) lub skorzystać z szybkich presetów:
+  - 🔵 **Executive Navy** (`#1a365d` / `#2b6cb0`)
+  - 🟢 **Tech Teal** (`#1a202c` / `#319795`)
+  - 🌿 **Emerald** (`#1c4532` / `#2f855a`)
+  - 🟣 **Royal Purple** (`#44337a` / `#805ad5`)
+  - 🟠 **Warm Amber** (`#2d3748` / `#dd6b20`)
+  - 🔴 **Crimson** (`#2d3748` / `#e53e3e`)
+  - ⚫ **Minimal Slate** (`#1a202c` / `#4a5568`)
+
+---
+
 ## 🚀 Jak korzystać z programu?
 
 ### 1. Panel graficzny w przeglądarce (Web UI)

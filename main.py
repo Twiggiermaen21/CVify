@@ -114,11 +114,12 @@ def load_profile_file(yaml_path: str = YAML_DEFAULT, json_path: str = JSON_DEFAU
         print(f"❌ Nie znaleziono ani pliku {yaml_path}, ani {json_path}!")
         sys.exit(1)
 
-def generate_documents(cv: CVData, docx_path: str = DOCX_DEFAULT, html_path: str = HTML_DEFAULT):
+def generate_documents(cv: CVData, docx_path: str = DOCX_DEFAULT, html_path: str = HTML_DEFAULT, template_name: str = None):
     os.makedirs(os.path.dirname(os.path.abspath(docx_path)), exist_ok=True)
     os.makedirs(os.path.dirname(os.path.abspath(html_path)), exist_ok=True)
 
-    print("\n📄 Generowanie nowoczesnego CV w formatach DOCX i HTML...")
+    chosen_template = template_name or getattr(cv, "template", "modern")
+    print(f"\n📄 Generowanie nowego CV w formatach DOCX i HTML [Szablon: {chosen_template}]...")
     
     # 1. DOCX
     docx_builder = DocxCVBuilder(cv)
@@ -126,7 +127,7 @@ def generate_documents(cv: CVData, docx_path: str = DOCX_DEFAULT, html_path: str
     print(f"  ✨ Wygenerowano plik Word: {docx_out}")
 
     # 2. HTML (z możliwością druku do PDF)
-    html_builder = HtmlCVBuilder(cv)
+    html_builder = HtmlCVBuilder(cv, template_name=chosen_template)
     html_out = html_builder.build(html_path)
     print(f"  ✨ Wygenerowano plik HTML (Druk do PDF): {html_out}")
 
@@ -143,6 +144,8 @@ def main():
     parser.add_argument("--json", default=JSON_DEFAULT, help="Ścieżka do pliku JSON (domyślnie: cv_data.json)")
     parser.add_argument("--docx-out", default=DOCX_DEFAULT, help="Nazwa wyjściowego pliku Word (domyślnie: output/nowe_cv.docx)")
     parser.add_argument("--html-out", default=HTML_DEFAULT, help="Nazwa wyjściowego pliku HTML (domyślnie: output/nowe_cv.html)")
+    from core.templates import list_templates
+    parser.add_argument("--template", default=None, choices=list_templates(), help="Wybór szablonu CV (onyx, blush, creative, boxes, modern, sidebar, classic, elegant, compact)")
 
     args = parser.parse_args()
 
@@ -168,7 +171,7 @@ def main():
     if cmd == "build":
         cv = load_profile_file(args.yaml, args.json)
         print_summary(cv)
-        generate_documents(cv, args.docx_out, args.html_out)
+        generate_documents(cv, args.docx_out, args.html_out, template_name=args.template)
         print("\n🎉 Sukces! Nowe CV zostało wygenerowane na podstawie pliku profilu.")
 
     elif cmd == "extract":
@@ -183,7 +186,7 @@ def main():
         cv = extract_and_merge(target_files)
         print_summary(cv)
         save_profile_files(cv, args.yaml, args.json)
-        generate_documents(cv, args.docx_out, args.html_out)
+        generate_documents(cv, args.docx_out, args.html_out, template_name=args.template)
         print("\n" + "=" * 65)
         print("🎉 GOTOWE! Nowe CV zostało wygenerowane na podstawie starych plików!")
         print(f"   1. Folder źródłowy:          {args.source_dir}/  (Twoje stare pliki CV)")

@@ -21,6 +21,7 @@ from core.parser import CVParser
 from core.merger import CVMerger
 from core.docx_builder import DocxCVBuilder
 from core.html_builder import HtmlCVBuilder
+from core.templates import list_templates
 
 app = FastAPI(title="CV Studio")
 
@@ -48,6 +49,77 @@ async def get_favicon_ico():
         if os.path.isfile(ico_path):
             return FileResponse(ico_path, media_type="image/x-icon")
     raise HTTPException(status_code=404, detail="Brak pliku favoicon.ico")
+
+@app.get("/api/templates")
+async def api_list_templates():
+    return {"templates": list_templates()}
+
+@app.get("/api/photo")
+async def get_photo():
+    # 1. Try static/photo.jpg or static/photo.png
+    for name in ("photo.jpg", "photo.png", "photo.jpeg", "zdjecie.jpg", "zdjecie.png"):
+        p = os.path.join(STATIC_DIR, name)
+        if os.path.isfile(p):
+            return FileResponse(p)
+    # 2. Check if CV has photo defined
+    cv = get_current_cv()
+    if cv.personal_info.photo:
+        p = cv.personal_info.photo
+        if not os.path.isabs(p):
+            p = os.path.join(ROOT_DIR, p)
+        if os.path.isfile(p):
+            return FileResponse(p)
+    raise HTTPException(status_code=404, detail="Brak zdjęcia profilowego")
+
+@app.post("/api/upload-photo")
+async def api_upload_photo(request: Request):
+    """Uploads a user profile photo to web/static/photo.jpg and updates cv_profile."""
+    import time
+    import base64
+    try:
+        content_type = request.headers.get("content-type", "")
+        img_bytes = None
+        ext = ".jpg"
+
+        if "application/json" in content_type:
+            payload = await request.json()
+            data_url = payload.get("data_url", "")
+            if not data_url or "," not in data_url:
+                return {"ok": False, "error": "Brak danych obrazu w zapytaniu"}
+            header, b64_data = data_url.split(",", 1)
+            if "png" in header:
+                ext = ".png"
+            elif "webp" in header:
+                ext = ".webp"
+            img_bytes = base64.b64decode(b64_data)
+        else:
+            form = await request.form()
+            photo_file = form.get("photo")
+            if not photo_file:
+                return {"ok": False, "error": "Nie wybrano pliku"}
+            filename = getattr(photo_file, "filename", "photo.jpg")
+            file_ext = os.path.splitext(filename)[1].lower()
+            if file_ext in (".jpg", ".jpeg", ".png", ".webp"):
+                ext = file_ext
+            img_bytes = await photo_file.read()
+
+        if not img_bytes:
+            return {"ok": False, "error": "Plik jest pusty"}
+
+        target_path = os.path.join(STATIC_DIR, f"photo{ext}")
+        with open(target_path, "wb") as f:
+            f.write(img_bytes)
+
+        rel_path = os.path.relpath(target_path, ROOT_DIR).replace("\\", "/")
+
+        # Persist into current cv_profile.yaml so it stays
+        cv = get_current_cv()
+        cv.personal_info.photo = rel_path
+        save_cv_to_disk(cv)
+
+        return {"ok": True, "photo_path": rel_path, "url": f"/api/photo?t={int(time.time())}"}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
 
 def get_current_cv() -> CVData:
     """Loads CV from YAML (preferred), JSON, or extracts from source files if needed."""
@@ -90,7 +162,7 @@ def save_cv_to_disk(cv: CVData):
     docx_builder.build(DOCX_FILE)
 
     # 4. HTML in output/
-    html_builder = HtmlCVBuilder(cv)
+    html_builder = HtmlCVBuilder(cv, template_name=getattr(cv, "template", "modern"))
     html_builder.build(HTML_FILE)
 
 @app.get("/", response_class=HTMLResponse)
@@ -123,8 +195,10 @@ async def api_save_cv(request: Request):
 async def api_preview_html(request: Request):
     try:
         data = await request.json()
+        template_name = data.pop("_template", None) or data.get("template") or "modern"
         cv = CVData.from_dict(data)
-        builder = HtmlCVBuilder(cv)
+        cv.template = template_name
+        builder = HtmlCVBuilder(cv, template_name=template_name)
         temp_html_path = os.path.join(OUTPUT_DIR, "temp_preview.html")
         builder.build(temp_html_path)
         with open(temp_html_path, "r", encoding="utf-8") as f:

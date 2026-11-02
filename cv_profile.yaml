@@ -8,6 +8,7 @@ personal_info:
   github: https://github.com/Twiggiermaen21
   portfolio: ''
   driver_license: B2
+  photo: web/static/photo.jpg
 summary: |-
   Absolwent studiów informatycznych na Uniwersytecie Śląskim w Katowicach, Inżynier Full Stack Software Engineer z silnym zainteresowaniem programowaniem i elektroniką.
 
@@ -175,3 +176,6 @@ clause: Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb niez
   Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony
   osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego
   przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (RODO)).
+template: modern
+theme_primary: '#1a365d'
+theme_accent: '#2b6cb0'

@@ -137,31 +137,79 @@ class DocxCVBuilder:
     def _build_header(self):
         info = self.data.personal_info
         
-        # Candidate Name
-        p_name = self.doc.add_paragraph()
-        p_name.paragraph_format.space_before = Pt(0)
-        p_name.paragraph_format.space_after = Pt(1)
-        r_name = p_name.add_run(info.name if info.name else "Kacper Pudełko")
-        r_name.font.name = FONT_FAMILY
-        r_name.font.size = Pt(22)
-        r_name.font.bold = True
-        r_name.font.color.rgb = COLOR_NAVY
+        # Check if photo exists
+        photo_path = info.photo
+        if photo_path and not os.path.isabs(photo_path):
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            photo_path = os.path.join(base_dir, photo_path)
+            
+        has_photo = photo_path and os.path.isfile(photo_path)
+        
+        if has_photo:
+            # 2-column header table for name+contact on left, photo on right
+            tbl = self.doc.add_table(rows=1, cols=2)
+            tbl.autofit = False
+            cell_left = tbl.cell(0, 0)
+            cell_right = tbl.cell(0, 1)
+            cell_left.width = Inches(5.3)
+            cell_right.width = Inches(1.5)
+            
+            p_name = cell_left.paragraphs[0]
+            p_name.paragraph_format.space_before = Pt(0)
+            p_name.paragraph_format.space_after = Pt(1)
+            r_name = p_name.add_run(info.name if info.name else "Kacper Pudełko")
+            r_name.font.name = FONT_FAMILY
+            r_name.font.size = Pt(22)
+            r_name.font.bold = True
+            r_name.font.color.rgb = COLOR_NAVY
 
-        # Professional Title
-        if info.title:
-            p_title = self.doc.add_paragraph()
-            p_title.paragraph_format.space_before = Pt(0)
-            p_title.paragraph_format.space_after = Pt(4)
-            r_title = p_title.add_run(info.title)
-            r_title.font.name = FONT_FAMILY
-            r_title.font.size = Pt(12)
-            r_title.font.bold = True
-            r_title.font.color.rgb = COLOR_ACCENT
+            if info.title:
+                p_title = cell_left.add_paragraph()
+                p_title.paragraph_format.space_before = Pt(0)
+                p_title.paragraph_format.space_after = Pt(4)
+                r_title = p_title.add_run(info.title)
+                r_title.font.name = FONT_FAMILY
+                r_title.font.size = Pt(12)
+                r_title.font.bold = True
+                r_title.font.color.rgb = COLOR_ACCENT
 
-        # Contact Info Bar
-        p_contact = self.doc.add_paragraph()
-        p_contact.paragraph_format.space_before = Pt(2)
-        p_contact.paragraph_format.space_after = Pt(8)
+            p_contact = cell_left.add_paragraph()
+            p_contact.paragraph_format.space_before = Pt(2)
+            p_contact.paragraph_format.space_after = Pt(8)
+            
+            # Photo in right cell
+            p_photo = cell_right.paragraphs[0]
+            p_photo.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+            p_photo.paragraph_format.space_before = Pt(0)
+            p_photo.paragraph_format.space_after = Pt(0)
+            try:
+                p_photo.add_run().add_picture(photo_path, width=Inches(1.2))
+            except Exception:
+                pass
+        else:
+            # Standard single column header
+            p_name = self.doc.add_paragraph()
+            p_name.paragraph_format.space_before = Pt(0)
+            p_name.paragraph_format.space_after = Pt(1)
+            r_name = p_name.add_run(info.name if info.name else "Kacper Pudełko")
+            r_name.font.name = FONT_FAMILY
+            r_name.font.size = Pt(22)
+            r_name.font.bold = True
+            r_name.font.color.rgb = COLOR_NAVY
+
+            if info.title:
+                p_title = self.doc.add_paragraph()
+                p_title.paragraph_format.space_before = Pt(0)
+                p_title.paragraph_format.space_after = Pt(4)
+                r_title = p_title.add_run(info.title)
+                r_title.font.name = FONT_FAMILY
+                r_title.font.size = Pt(12)
+                r_title.font.bold = True
+                r_title.font.color.rgb = COLOR_ACCENT
+
+            p_contact = self.doc.add_paragraph()
+            p_contact.paragraph_format.space_before = Pt(2)
+            p_contact.paragraph_format.space_after = Pt(8)
 
         items = []
         if info.location:
