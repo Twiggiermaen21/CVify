@@ -335,7 +335,6 @@ class BaseTemplate(ABC):
 
     def _print_button(self) -> str:
         """Return floating print button HTML."""
-        return '<button class="print-btn" onclick="window.print()">🖨️ Drukuj / Zapisz jako PDF</button>'
         return '<button class="print-btn" onclick="window.print()">Drukuj / Zapisz jako PDF</button>'
 
     # ── Common CSS blocks ─────────────────────────────────────────────
