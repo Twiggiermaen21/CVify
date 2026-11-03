@@ -274,8 +274,8 @@ class CompactTemplate(BaseTemplate):
                 <td class="col-right">
                     {summary_html}
                     {projects_html}
-                    {skills_html}
                     {languages_html}
+                    {skills_html}
                     {cert_html}
                 </td>
             </tr>

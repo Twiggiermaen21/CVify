@@ -118,40 +118,31 @@ class BaseTemplate(ABC):
     # ── Contact helpers ───────────────────────────────────────────────
 
     def _contact_items(self) -> list:
-        """Return list of (emoji, label_html) tuples for contact info."""
         """Return list of (icon_html, label_html) tuples for contact info."""
         info = self.info
         items = []
         if info.location:
-            items.append(("📍", self.esc(info.location)))
             items.append((self.ICO_PIN, self.esc(info.location)))
         if info.phone:
-            items.append(("📞", f'<a href="tel:{self.esc(info.phone)}">{self.esc(info.phone)}</a>'))
             items.append((self.ICO_PHONE, f'<a href="tel:{self.esc(info.phone)}">{self.esc(info.phone)}</a>'))
         if info.email:
-            items.append(("✉️", f'<a href="mailto:{self.esc(info.email)}">{self.esc(info.email)}</a>'))
             items.append((self.ICO_MAIL, f'<a href="mailto:{self.esc(info.email)}">{self.esc(info.email)}</a>'))
         if info.linkedin:
             label = info.linkedin.replace("https://", "").replace("http://", "").replace("www.", "")
-            items.append(("💼", f'<a href="{self.esc(info.linkedin)}" target="_blank">{self.esc(label)}</a>'))
             items.append((self.ICO_LINKEDIN, f'<a href="{self.esc(info.linkedin)}" target="_blank">{self.esc(label)}</a>'))
         if info.github:
             label = info.github.replace("https://", "").replace("http://", "").replace("www.", "")
-            items.append(("🐙", f'<a href="{self.esc(info.github)}" target="_blank">{self.esc(label)}</a>'))
             items.append((self.ICO_GITHUB, f'<a href="{self.esc(info.github)}" target="_blank">{self.esc(label)}</a>'))
         if info.portfolio:
             label = info.portfolio.replace("https://", "").replace("http://", "").replace("www.", "")
-            items.append(("🌐", f'<a href="{self.esc(info.portfolio)}" target="_blank">{self.esc(label)}</a>'))
             items.append((self.ICO_GLOBE, f'<a href="{self.esc(info.portfolio)}" target="_blank">{self.esc(label)}</a>'))
         if info.driver_license:
-            items.append(("🚗", f'Prawo jazdy: {self.esc(info.driver_license)}'))
             items.append((self.ICO_CAR, f'Prawo jazdy: {self.esc(info.driver_license)}'))
         return items
 
     def _contact_bar_html(self, separator: str = " &bull; ") -> str:
         """Return horizontal contact bar HTML."""
         items = self._contact_items()
-        spans = [f'<span>{emoji} {label}</span>' for emoji, label in items]
         spans = [f'<span class="contact-entry">{ico} {label}</span>' for ico, label in items]
         return separator.join(spans)
 
@@ -231,8 +222,9 @@ class BaseTemplate(ABC):
         for item in self.data.projects:
             link = ""
             if item.url:
-                link = f'<a class="proj-link" href="{self.esc(item.url)}" target="_blank">🔗 {self.esc(item.url)}</a>'
-                link = f'<a class="proj-link" href="{self.esc(item.url)}" target="_blank">{self.ICO_LINK} {self.esc(item.url)}</a>'
+                clean_url = item.url.replace("https://", "").replace("http://", "").rstrip("/")
+                icon = self.ICO_GITHUB if "github.com" in clean_url else self.ICO_LINK
+                link = f'<a class="proj-link" href="{self.esc(item.url)}" target="_blank" rel="noopener">{icon} {self.esc(clean_url)}</a>'
             tech_tags = ""
             if item.tech_stack:
                 tags = "".join(f'<span class="tech-badge">{self.esc(t)}</span>' for t in item.tech_stack)

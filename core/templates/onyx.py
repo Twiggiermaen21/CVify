@@ -27,24 +27,18 @@ class OnyxTemplate(BaseTemplate):
         contact_rows = []
         info = self.info
         if info.phone:
-            contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">📞</span><span><a href="tel:{self.esc(info.phone)}">{self.esc(info.phone)}</a></span></div>')
             contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">{self.ICO_PHONE}</span><span><a href="tel:{self.esc(info.phone)}">{self.esc(info.phone)}</a></span></div>')
         if info.email:
-            contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">✉</span><span><a href="mailto:{self.esc(info.email)}">{self.esc(info.email)}</a></span></div>')
             contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">{self.ICO_MAIL}</span><span><a href="mailto:{self.esc(info.email)}">{self.esc(info.email)}</a></span></div>')
         if info.location:
-            contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">📍</span><span>{self.esc(info.location)}</span></div>')
             contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">{self.ICO_PIN}</span><span>{self.esc(info.location)}</span></div>')
         if info.linkedin:
             lbl = info.linkedin.replace("https://", "").replace("http://", "").replace("www.", "")
-            contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">💼</span><span><a href="{self.esc(info.linkedin)}" target="_blank">{self.esc(lbl)}</a></span></div>')
             contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">{self.ICO_LINKEDIN}</span><span><a href="{self.esc(info.linkedin)}" target="_blank">{self.esc(lbl)}</a></span></div>')
         if info.github:
             lbl = info.github.replace("https://", "").replace("http://", "").replace("www.", "")
-            contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">🐙</span><span><a href="{self.esc(info.github)}" target="_blank">{self.esc(lbl)}</a></span></div>')
             contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">{self.ICO_GITHUB}</span><span><a href="{self.esc(info.github)}" target="_blank">{self.esc(lbl)}</a></span></div>')
         if info.driver_license:
-            contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">🚗</span><span>Prawo jazdy: {self.esc(info.driver_license)}</span></div>')
             contact_rows.append(f'<div class="sb-contact-row"><span class="sb-icon">{self.ICO_CAR}</span><span>Prawo jazdy: {self.esc(info.driver_license)}</span></div>')
         
         contact_html = "\n".join(contact_rows)
@@ -90,7 +84,7 @@ class OnyxTemplate(BaseTemplate):
             exp_rows.append(f"""
             <div class="onyx-entry">
                 <div class="onyx-entry-header">
-                    <span class="onyx-check">✔</span>
+                    <span class="onyx-check">{self.CHECK_SVG}</span>
                     <span class="onyx-check">{self.CHECK_SVG}</span>
                     <div class="onyx-title-block">
                         <span class="onyx-role">{self.esc(exp.role)}, {comp_loc}</span>
@@ -111,7 +105,7 @@ class OnyxTemplate(BaseTemplate):
             st_rows.append(f"""
             <div class="onyx-entry">
                 <div class="onyx-entry-header">
-                    <span class="onyx-check">✔</span>
+                    <span class="onyx-check">{self.CHECK_SVG}</span>
                     <span class="onyx-check">{self.CHECK_SVG}</span>
                     <div class="onyx-title-block">
                         <span class="onyx-role">{self.esc(st.name)}</span>
@@ -126,14 +120,18 @@ class OnyxTemplate(BaseTemplate):
         # Projects
         proj_rows = []
         for pr in self.data.projects:
-            link = f'<a class="onyx-link" href="{self.esc(pr.url)}" target="_blank">🔗 {self.esc(pr.url)}</a>' if pr.url else ""
-            link = f'<a class="onyx-link" href="{self.esc(pr.url)}" target="_blank">{self.ICO_LINK} Link</a>' if pr.url else ""
+            if pr.url:
+                clean_url = pr.url.replace("https://", "").replace("http://", "").rstrip("/")
+                icon = self.ICO_GITHUB if "github.com" in clean_url else self.ICO_LINK
+                link = f'<a class="onyx-link" href="{self.esc(pr.url)}" target="_blank" rel="noopener">{icon} {self.esc(clean_url)}</a>'
+            else:
+                link = ""
             tech = f'<div class="onyx-tech">[{self.esc(", ".join(pr.tech_stack))}]</div>' if pr.tech_stack else ""
             desc = f'<p class="onyx-proj-desc">{self.esc(pr.description)}</p>' if pr.description else ""
             proj_rows.append(f"""
             <div class="onyx-entry">
                 <div class="onyx-entry-header">
-                    <span class="onyx-check">✔</span>
+                    <span class="onyx-check">{self.CHECK_SVG}</span>
                     <span class="onyx-check">{self.CHECK_SVG}</span>
                     <div class="onyx-title-block">
                         <span class="onyx-role">{self.esc(pr.name)}</span>
@@ -152,7 +150,7 @@ class OnyxTemplate(BaseTemplate):
                 items = "".join(f"<li>{self.esc(s)}</li>" for s in sks)
                 skills_main_html += f"""
                 <div class="onyx-skill-group">
-                    <div class="onyx-skill-cat-title"><span class="onyx-check">✔</span> <strong>{self.esc(cat_name)}:</strong></div>
+                    <div class="onyx-skill-cat-title"><span class="onyx-check">{self.CHECK_SVG}</span> <strong>{self.esc(cat_name)}:</strong></div>
                     <div class="onyx-skill-cat-title"><span class="onyx-check">{self.CHECK_SVG}</span> <strong>{self.esc(cat_name)}:</strong></div>
                     <ul class="onyx-bullets-sub">{items}</ul>
                 </div>"""
@@ -160,7 +158,7 @@ class OnyxTemplate(BaseTemplate):
             items = "".join(f"<li>{self.esc(s)}</li>" for s in self.data.skills_technical)
             skills_main_html = f"""
             <div class="onyx-skill-group">
-                <div class="onyx-skill-cat-title"><span class="onyx-check">✔</span> <strong>Umiejętności techniczne:</strong></div>
+                <div class="onyx-skill-cat-title"><span class="onyx-check">{self.CHECK_SVG}</span> <strong>Umiejętności techniczne:</strong></div>
                 <div class="onyx-skill-cat-title"><span class="onyx-check">{self.CHECK_SVG}</span> <strong>Umiejętności techniczne:</strong></div>
                 <ul class="onyx-bullets-sub">{items}</ul>
             </div>"""

@@ -105,7 +105,12 @@ class BoxesTemplate(BaseTemplate):
         # Projects
         proj_rows = []
         for pr in self.data.projects:
-            link = f'<a class="bx-link" href="{self.esc(pr.url)}" target="_blank">{self.ICO_LINK} Link</a>' if pr.url else ""
+            if pr.url:
+                clean_url = pr.url.replace("https://", "").replace("http://", "").rstrip("/")
+                icon = self.ICO_GITHUB if "github.com" in clean_url else self.ICO_LINK
+                link = f'<a class="bx-link" href="{self.esc(pr.url)}" target="_blank" rel="noopener">{icon} {self.esc(clean_url)}</a>'
+            else:
+                link = ""
             tech = f'<div class="bx-tech-info">{self.esc(", ".join(pr.tech_stack))}</div>' if pr.tech_stack else ""
             desc = f'<div class="bx-proj-desc">{self.esc(pr.description)}</div>' if pr.description else ""
             proj_rows.append(f"""
@@ -439,7 +444,10 @@ class BoxesTemplate(BaseTemplate):
 
         /* Skills Pills */
         .bx-skill-group {{
-            margin-bottom: 10px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 5px;
         }}
 
         .bx-skill-group:last-child {{
@@ -452,22 +460,27 @@ class BoxesTemplate(BaseTemplate):
             color: #475569;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-            margin-bottom: 5px;
+            min-width: 120px;
+            flex-shrink: 0;
+            margin-bottom: 0;
         }}
 
         .bx-skill-pills {{
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 4px 6px;
         }}
 
         .bx-skill-pill {{
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 500;
             color: #1e293b;
             background: #f1f5f9;
             border: 1px solid #e2e8f0;
-            border-radius: 6px;
+            border-radius: 4px;
+            padding: 2px 7px;
+            line-height: 1.35;
+        }}
             padding: 2.5px 8px;
         }}
 

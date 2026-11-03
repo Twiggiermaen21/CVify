@@ -328,8 +328,8 @@ class SidebarTemplate(BaseTemplate):
                     <div class="sidebar-heading">Kontakt</div>
                     {contact_items_html}
 
-                    {f'<div class="sidebar-heading">Umiejętności</div>{sidebar_skills_html}' if sidebar_skills_html else ''}
-                    {f'<div class="sidebar-heading">Języki</div>{sidebar_languages_html}' if sidebar_languages_html else ''}
+                    {f'<div class="sidebar-heading">Języki obce</div>{sidebar_languages_html}' if sidebar_languages_html else ''}
+                    {f'<div class="sidebar-heading">Umiejętności techniczne</div>{sidebar_skills_html}' if sidebar_skills_html else ''}
                 </td>
 
                 <!-- RIGHT MAIN CONTENT -->

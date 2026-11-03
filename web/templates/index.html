@@ -184,6 +184,74 @@
             font-size: 11.5px;
         }
 
+        /* Color Swatches and Wheel Disc */
+        .theme-color-bar {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #111827;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid #1f293d;
+        }
+
+        .swatch-btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+            transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+            outline: none;
+            flex-shrink: 0;
+        }
+        .swatch-btn:hover {
+            transform: scale(1.22);
+        }
+        .swatch-btn.active {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 2px #3b82f6, 0 2px 6px rgba(0,0,0,0.5);
+            transform: scale(1.15);
+        }
+
+        .color-wheel-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            margin-left: 2px;
+        }
+        .color-wheel-disc {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: conic-gradient(red, #ff8000, yellow, lime, aqua, blue, magenta, red);
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+            pointer-events: none;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .color-wheel-wrapper:hover .color-wheel-disc {
+            transform: scale(1.22);
+            box-shadow: 0 0 0 2px #60a5fa, 0 2px 8px rgba(0,0,0,0.6);
+        }
+        .color-wheel-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+        }
+
         /* Layout Grid */
         main.main-layout {
             display: grid;
@@ -527,6 +595,28 @@
                 </optgroup>
             </select>
         </div>
+
+        <!-- Kolor motywu z pełnym kółkiem barw i kropkami -->
+        <div class="theme-color-bar" title="Wybierz motyw kolorystyczny lub kliknij kółko, aby wybrać dowolny własny kolor">
+            <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Kolor:</span>
+            <div id="quick-swatches" style="display:flex; align-items:center; gap:5px;">
+                <button type="button" class="swatch-btn" data-color="#7b113a" style="background:#7b113a;" onclick="selectThemeColor('#7b113a')" title="Burgund (Rose / Aleksandra)"></button>
+                <button type="button" class="swatch-btn" data-color="#f5b800" style="background:#f5b800;" onclick="selectThemeColor('#f5b800')" title="Żółty (Miodowy / Creative)"></button>
+                <button type="button" class="swatch-btn" data-color="#ea580c" style="background:#ea580c;" onclick="selectThemeColor('#ea580c')" title="Pomarańczowy"></button>
+                <button type="button" class="swatch-btn" data-color="#e11d48" style="background:#e11d48;" onclick="selectThemeColor('#e11d48')" title="Czerwień / Rubin"></button>
+                <button type="button" class="swatch-btn" data-color="#7c3aed" style="background:#7c3aed;" onclick="selectThemeColor('#7c3aed')" title="Fiolet / Purpura"></button>
+                <button type="button" class="swatch-btn" data-color="#2563eb" style="background:#2563eb;" onclick="selectThemeColor('#2563eb')" title="Królewski błękit"></button>
+                <button type="button" class="swatch-btn" data-color="#0284c7" style="background:#0284c7;" onclick="selectThemeColor('#0284c7')" title="Cyjan / Morski"></button>
+                <button type="button" class="swatch-btn" data-color="#059669" style="background:#059669;" onclick="selectThemeColor('#059669')" title="Szmaragd"></button>
+                <button type="button" class="swatch-btn" data-color="#1e3a8a" style="background:#1e3a8a;" onclick="selectThemeColor('#1e3a8a')" title="Granat"></button>
+                <button type="button" class="swatch-btn" data-color="#1e293b" style="background:#1e293b;" onclick="selectThemeColor('#1e293b')" title="Grafit / Czerń"></button>
+            </div>
+            
+            <div class="color-wheel-wrapper" title="Kółko z kolorami (kliknij, aby wybrać DOWOLNY własny kolor)">
+                <input type="color" id="top-color-picker" class="color-wheel-input" value="#f5b800" onchange="selectThemeColor(this.value)" oninput="selectThemeColor(this.value)">
+                <div class="color-wheel-disc" id="color-wheel-disc"></div>
+            </div>
+        </div>
         <div class="top-actions">
             <button class="btn-outline" onclick="reloadFromSourceFiles()" title="Skanuje folder i ponownie parsuje stare pliki PDF i Word">
                 Skanuj PDF/Word
@@ -648,16 +738,25 @@
                     <div id="startups-container"></div>
                 </div>
 
-                <!-- 5. Projekty -->
+                <!-- 5. Wykształcenie -->
                 <div class="form-section">
                     <div class="section-header">
-                        <h2>Wybrane Projekty</h2>
-                        <button class="btn-outline btn-small" onclick="addProject()">+ Dodaj projekt</button>
+                        <h2>Wykształcenie</h2>
+                        <button class="btn-outline btn-small" onclick="addEducation()">+ Dodaj edukację</button>
                     </div>
-                    <div id="projects-container"></div>
+                    <div id="education-container"></div>
                 </div>
 
-                <!-- 6. Umiejętności -->
+                <!-- 6. Języki obce -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2>Języki obce</h2>
+                        <button class="btn-outline btn-small" onclick="addLanguage()">+ Dodaj język</button>
+                    </div>
+                    <div id="languages-container"></div>
+                </div>
+
+                <!-- 7. Umiejętności i Technologie (pod językami obcymi) -->
                 <div class="form-section">
                     <div class="section-header">
                         <h2>Umiejętności i Technologie</h2>
@@ -678,28 +777,19 @@
                         <label>Narzędzia & DevOps (oddzielaj przecinkami)</label>
                         <input type="text" id="sk-devops" class="form-control" oninput="updateSkillsCat('Narzędzia & DevOps', this.value)">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display:none;">
                         <label>Umiejętności miękkie (oddzielaj przecinkami)</label>
                         <input type="text" id="sk-soft" class="form-control" oninput="updateSoftSkills(this.value)">
                     </div>
                 </div>
 
-                <!-- 7. Wykształcenie -->
+                <!-- 8. Wybrane Projekty -->
                 <div class="form-section">
                     <div class="section-header">
-                        <h2>Wykształcenie</h2>
-                        <button class="btn-outline btn-small" onclick="addEducation()">+ Dodaj edukację</button>
+                        <h2>Wybrane Projekty</h2>
+                        <button class="btn-outline btn-small" onclick="addProject()">+ Dodaj projekt</button>
                     </div>
-                    <div id="education-container"></div>
-                </div>
-
-                <!-- 8. Języki -->
-                <div class="form-section">
-                    <div class="section-header">
-                        <h2>Języki obce</h2>
-                        <button class="btn-outline btn-small" onclick="addLanguage()">+ Dodaj język</button>
-                    </div>
-                    <div id="languages-container"></div>
+                    <div id="projects-container"></div>
                 </div>
 
                 <!-- 8.5. Kolory i motyw graficzny -->
@@ -795,13 +885,42 @@
             if (!cvData) return;
             cvData[field] = value;
             if (field === 'theme_primary') {
-                document.getElementById('theme-primary').value = value;
-                document.getElementById('theme-primary-text').value = value;
+                const el1 = document.getElementById('theme-primary');
+                if (el1) el1.value = value;
+                const el2 = document.getElementById('theme-primary-text');
+                if (el2) el2.value = value;
+                const elTop = document.getElementById('top-color-picker');
+                if (elTop) elTop.value = value;
+                highlightActiveSwatch(value);
             } else if (field === 'theme_accent') {
-                document.getElementById('theme-accent').value = value;
-                document.getElementById('theme-accent-text').value = value;
+                const el3 = document.getElementById('theme-accent');
+                if (el3) el3.value = value;
+                const el4 = document.getElementById('theme-accent-text');
+                if (el4) el4.value = value;
             }
             triggerPreview();
+        }
+
+        function selectThemeColor(hex) {
+            if (!cvData) return;
+            updateThemeColor('theme_primary', hex);
+        }
+
+        function highlightActiveSwatch(hex) {
+            if (!hex) return;
+            const norm = hex.toLowerCase();
+            document.querySelectorAll('.swatch-btn').forEach(btn => {
+                const c = btn.getAttribute('data-color');
+                if (c && c.toLowerCase() === norm) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            const disc = document.getElementById('color-wheel-disc');
+            if (disc) {
+                disc.title = 'Wybrany kolor: ' + hex + ' (kliknij, aby otworzyć pełne kółko kolorów)';
+            }
         }
 
         function applyColorPreset(primary, accent) {
@@ -958,10 +1077,12 @@
             }
 
             // Theme colors
-            if (cvData.theme_primary) {
-                document.getElementById('theme-primary').value = cvData.theme_primary;
-                document.getElementById('theme-primary-text').value = cvData.theme_primary;
-            }
+            const primaryColor = cvData.theme_primary || (currentTemplate === 'creative' ? '#f5b800' : '#1a365d');
+            document.getElementById('theme-primary').value = primaryColor;
+            document.getElementById('theme-primary-text').value = primaryColor;
+            const topPicker = document.getElementById('top-color-picker');
+            if (topPicker) topPicker.value = primaryColor;
+            highlightActiveSwatch(primaryColor);
             if (cvData.theme_accent) {
                 document.getElementById('theme-accent').value = cvData.theme_accent;
                 document.getElementById('theme-accent-text').value = cvData.theme_accent;

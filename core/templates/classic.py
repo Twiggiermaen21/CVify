@@ -204,9 +204,9 @@ class ClassicTemplate(BaseTemplate):
         {experience_html}
         {startups_html}
         {projects_html}
-        {skills_html}
         {education_html}
         {languages_html}
+        {skills_html}
         {cert_html}
         {self._clause_html()}
     </div>

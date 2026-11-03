@@ -2,7 +2,7 @@
 Blush Pastel CV Template.
 Direct 1:1 recreation of Image 2 (Laura Kubiak warm beige / blush style):
 - Warm beige/blush left sidebar with ring-bordered circular photo
-- Icon-prefixed section titles with full-width divider lines (💼 DOŚWIADCZENIE, 🎓 WYKSZTAŁCENIE, ⭐ UMIEJĘTNOŚCI)
+- Icon-prefixed section titles with full-width divider lines (DOŚWIADCZENIE, WYKSZTAŁCENIE, UMIEJĘTNOŚCI)
 - Section titles with full-width divider lines (DOSWIADCZENIE, WYKSZTALCENIE, UMIEJETNOSCI)
 - Right-aligned job dates on the role line
 - Warm cocoa/mocha typography and delicate bullet points
@@ -25,24 +25,18 @@ class BlushTemplate(BaseTemplate):
         info = self.info
         contact_rows = []
         if info.phone:
-            contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">📞</span><span><a href="tel:{self.esc(info.phone)}">{self.esc(info.phone)}</a></span></div>')
             contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">{self.ICO_PHONE}</span><span><a href="tel:{self.esc(info.phone)}">{self.esc(info.phone)}</a></span></div>')
         if info.email:
-            contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">✉</span><span><a href="mailto:{self.esc(info.email)}">{self.esc(info.email)}</a></span></div>')
             contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">{self.ICO_MAIL}</span><span><a href="mailto:{self.esc(info.email)}">{self.esc(info.email)}</a></span></div>')
         if info.location:
-            contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">📍</span><span>{self.esc(info.location)}</span></div>')
             contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">{self.ICO_PIN}</span><span>{self.esc(info.location)}</span></div>')
         if info.linkedin:
             lbl = info.linkedin.replace("https://", "").replace("http://", "").replace("www.", "")
-            contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">💼</span><span><a href="{self.esc(info.linkedin)}" target="_blank">{self.esc(lbl)}</a></span></div>')
             contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">{self.ICO_LINKEDIN}</span><span><a href="{self.esc(info.linkedin)}" target="_blank">{self.esc(lbl)}</a></span></div>')
         if info.github:
             lbl = info.github.replace("https://", "").replace("http://", "").replace("www.", "")
-            contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">🐙</span><span><a href="{self.esc(info.github)}" target="_blank">{self.esc(lbl)}</a></span></div>')
             contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">{self.ICO_GITHUB}</span><span><a href="{self.esc(info.github)}" target="_blank">{self.esc(lbl)}</a></span></div>')
         if info.driver_license:
-            contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">🚗</span><span>Prawo jazdy: {self.esc(info.driver_license)}</span></div>')
             contact_rows.append(f'<div class="blush-contact-row"><span class="blush-icon">{self.ICO_CAR}</span><span>Prawo jazdy: {self.esc(info.driver_license)}</span></div>')
         
         contact_html = "\n".join(contact_rows)
@@ -121,8 +115,12 @@ class BlushTemplate(BaseTemplate):
         # Projects
         proj_rows = []
         for pr in self.data.projects:
-            link = f'<a class="blush-link" href="{self.esc(pr.url)}" target="_blank">🔗 Link</a>' if pr.url else ""
-            link = f'<a class="blush-link" href="{self.esc(pr.url)}" target="_blank">{self.ICO_LINK} Link</a>' if pr.url else ""
+            if pr.url:
+                clean_url = pr.url.replace("https://", "").replace("http://", "").rstrip("/")
+                icon = self.ICO_GITHUB if "github.com" in clean_url else self.ICO_LINK
+                link = f'<a class="blush-link" href="{self.esc(pr.url)}" target="_blank" rel="noopener">{icon} {self.esc(clean_url)}</a>'
+            else:
+                link = ""
             tech = f'<span class="blush-tech-inline">[{self.esc(", ".join(pr.tech_stack))}]</span>' if pr.tech_stack else ""
             desc = f'<p class="blush-desc">{self.esc(pr.description)}</p>' if pr.description else ""
             proj_rows.append(f"""
@@ -444,31 +442,31 @@ class BlushTemplate(BaseTemplate):
                     {summary_p}
 
                     {f'''<div class="blush-section-header">
-                        <span class="blush-sec-icon">💼</span>
+                        <span class="blush-sec-icon"><svg class="cv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
                         <span class="blush-sec-indicator"></span>
                         <span class="blush-section-title">Doświadczenie</span>
                     </div>{experience_html}''' if experience_html else ''}
 
                     {f'''<div class="blush-section-header">
-                        <span class="blush-sec-icon">🚀</span>
+                        <span class="blush-sec-icon"><svg class="cv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></span>
                         <span class="blush-sec-indicator"></span>
                         <span class="blush-section-title">Start-up & Inicjatywy</span>
                     </div>{startups_html}''' if startups_html else ''}
 
                     {f'''<div class="blush-section-header">
-                        <span class="blush-sec-icon">💻</span>
+                        <span class="blush-sec-icon"><svg class="cv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
                         <span class="blush-sec-indicator"></span>
                         <span class="blush-section-title">Wybrane Projekty</span>
                     </div>{projects_html}''' if projects_html else ''}
 
                     {f'''<div class="blush-section-header">
-                        <span class="blush-sec-icon">🎓</span>
+                        <span class="blush-sec-icon"><svg class="cv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
                         <span class="blush-sec-indicator"></span>
                         <span class="blush-section-title">Wykształcenie</span>
                     </div>{education_html}''' if education_html else ''}
 
                     {f'''<div class="blush-section-header">
-                        <span class="blush-sec-icon">⭐</span>
+                        <span class="blush-sec-icon"><svg class="cv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 12 2"/></svg></span>
                         <span class="blush-sec-indicator"></span>
                         <span class="blush-section-title">Umiejętności</span>
                     </div>{skills_html}''' if skills_html else ''}
