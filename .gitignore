@@ -1,6 +1,46 @@
+# Python & Virtual Environments
 .venv/
+venv/
+ENV/
+env/
 __pycache__/
-*.pyc
-temp_preview.html
-~$*.docx
+*.py[cod]
+*$py.class
+*.so
+.Python
 
+# User Private Data & Personal CV profiles
+cv_profile.yaml
+cv_data.json
+*.profile.yaml
+
+# Photos & Uploaded Images
+web/static/photo.*
+web/static/uploads/
+*.jpg
+*.jpeg
+*.png
+*.webp
+!web/static/favicon.ico
+!web/static/favoicon.ico
+
+# Source Documents (input CVs)
+source_cvs/*
+!source_cvs/.gitkeep
+
+# Output Documents (generated CVs)
+output/*
+!output/.gitkeep
+temp_preview.html
+
+# Office & PDF Documents (Word, PDF lock files)
+*.pdf
+*.docx
+~$*.docx
+*.doc
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

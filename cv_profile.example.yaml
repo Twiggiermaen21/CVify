@@ -1,0 +1,65 @@
+personal_info:
+  name: Jan Kowalski
+  title: Full Stack Developer
+  email: jan.kowalski@example.com
+  phone: "+48 123 456 789"
+  location: Warszawa, Polska
+  linkedin: https://www.linkedin.com/in/jankowalski
+  github: https://github.com/jankowalski
+  portfolio: ''
+  driver_license: B
+  photo: ''
+summary: |-
+  Doświadczony programista Full Stack z pasją do tworzenia skalowalnych aplikacji webowych.
+skills_technical:
+  - TypeScript, JavaScript, Python
+  - React, Next.js, Node.js
+  - PostgreSQL, Docker, Git
+skills_soft:
+  - Rozwiązywanie problemów
+  - Praca zespołowa
+  - Zarządzanie czasem
+skills_categorized:
+  Frontend:
+    - React
+    - TypeScript
+  Backend:
+    - Node.js
+    - Python
+  DevOps & Bazy danych:
+    - Docker
+    - PostgreSQL
+    - Git
+experience:
+  - role: Full Stack Developer
+    company: Tech Company Sp. z o.o.
+    location: Warszawa
+    period: 01.2023 - obecnie
+    description:
+      - Rozwój aplikacji webowych w technologii React i Node.js.
+      - Projektowanie i wdrażanie interfejsów REST API.
+startups: []
+education:
+  - degree: Inżynier Informatyki
+    institution: Politechnika Warszawska
+    location: Warszawa
+    period: 10.2019 - 02.2023
+    details: ''
+projects:
+  - name: Przykładowy Projekt
+    url: https://github.com/example/project
+    tech_stack:
+      - React
+      - FastAPI
+    description: Opis przykładowego projektu.
+    highlights: []
+languages:
+  - language: Polski
+    level: Język ojczysty
+  - language: Angielski
+    level: Zaawansowany (C1)
+certifications: []
+clause: Wyrażam zgodę na przetwarzanie moich danych osobowych dla potrzeb niezbędnych do realizacji procesu rekrutacji.
+template: boxes
+theme_primary: '#1a365d'
+theme_accent: '#2b6cb0'
