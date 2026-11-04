@@ -766,16 +766,20 @@
                         <input type="text" id="sk-frontend" class="form-control" oninput="updateSkillsCat('Frontend', this.value)">
                     </div>
                     <div class="form-group">
-                        <label>Backend & AI (oddzielaj przecinkami)</label>
-                        <input type="text" id="sk-backend" class="form-control" oninput="updateSkillsCat('Backend', this.value)">
+                        <label>Backend & API (oddzielaj przecinkami)</label>
+                        <input type="text" id="sk-backend" class="form-control" oninput="updateSkillsCat('Backend & API', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>Testowanie & QA (oddzielaj przecinkami)</label>
+                        <input type="text" id="sk-qa" class="form-control" oninput="updateSkillsCat('Testowanie & QA', this.value)">
                     </div>
                     <div class="form-group">
                         <label>Bazy danych (oddzielaj przecinkami)</label>
                         <input type="text" id="sk-db" class="form-control" oninput="updateSkillsCat('Bazy danych', this.value)">
                     </div>
                     <div class="form-group">
-                        <label>Narzędzia & DevOps (oddzielaj przecinkami)</label>
-                        <input type="text" id="sk-devops" class="form-control" oninput="updateSkillsCat('Narzędzia & DevOps', this.value)">
+                        <label>Narzędzia, Cloud & DevOps (oddzielaj przecinkami)</label>
+                        <input type="text" id="sk-devops" class="form-control" oninput="updateSkillsCat('Narzędzia, Cloud & DevOps', this.value)">
                     </div>
                     <div class="form-group" style="display:none;">
                         <label>Umiejętności miękkie (oddzielaj przecinkami)</label>
@@ -1062,10 +1066,15 @@
             // Skills
             const cats = cvData.skills_categorized || {};
             document.getElementById('sk-frontend').value = (cats['Frontend'] || []).join(', ');
-            document.getElementById('sk-backend').value = (cats['Backend'] || []).join(', ');
+            document.getElementById('sk-backend').value = (cats['Backend & API'] || cats['Backend'] || []).join(', ');
+            if (document.getElementById('sk-qa')) {
+                document.getElementById('sk-qa').value = (cats['Testowanie & QA'] || []).join(', ');
+            }
             document.getElementById('sk-db').value = (cats['Bazy danych'] || []).join(', ');
-            document.getElementById('sk-devops').value = (cats['Narzędzia & DevOps'] || []).join(', ');
-            document.getElementById('sk-soft').value = (cvData.skills_soft || []).join(', ');
+            document.getElementById('sk-devops').value = (cats['Narzędzia, Cloud & DevOps'] || cats['Narzędzia & DevOps'] || []).join(', ');
+            if (document.getElementById('sk-soft')) {
+                document.getElementById('sk-soft').value = (cvData.skills_soft || []).join(', ');
+            }
 
             // Clause
             document.getElementById('cv-clause').value = cvData.clause || '';
