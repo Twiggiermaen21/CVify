@@ -251,8 +251,14 @@ async def api_export_docx():
     )
 
 def run_server(host: str = "127.0.0.1", port: int = 8000, open_browser: bool = True):
+    if sys.platform == "win32":
+        try:
+            sys.stdout.reconfigure(encoding="utf-8")
+            sys.stderr.reconfigure(encoding="utf-8")
+        except Exception:
+            pass
     url = f"http://{host}:{port}"
-    print(f"\n🚀 Uruchamianie CV Studio pod adresem: {url}")
+    print(f"\n[CV Studio] Uruchamianie pod adresem: {url}")
     print("   Naciśnij Ctrl+C, aby zatrzymać serwer.\n")
     if open_browser:
         try:

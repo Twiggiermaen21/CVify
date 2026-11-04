@@ -122,3 +122,4 @@ if norm_target in norm_content:
     print("SUCCESS: index.html updated")
 else:
     print("ERROR: norm_target not in norm_content")
+
