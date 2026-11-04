@@ -363,22 +363,30 @@ class BaseTemplate(ABC):
     def _css_print_base(self) -> str:
         """Return base @media print rules."""
         return """
+        @page {
+            size: A4;
+            margin: 0;
+        }
         @media print {
             @page {
                 size: A4;
-                margin: 12mm 14mm;
+                margin: 0;
             }
-            body {
-                background: none;
-                padding: 0;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+            html, body {
+                background: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             .cv-container {
-                box-shadow: none;
-                padding: 0;
-                max-width: 100%;
-                border-radius: 0;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                border-radius: 0 !important;
             }
             .print-btn {
                 display: none !important;
