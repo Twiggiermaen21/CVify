@@ -242,7 +242,7 @@ class CreativeTemplate(BaseTemplate):
             width: 28%;
             background-color: #f8fafc;
             color: #2d3748;
-            padding: 0 18px 28px 18px;
+            padding: 0 16px 20px 16px;
             vertical-align: top;
             box-sizing: border-box;
             border-right: 1px solid #edf2f7;
@@ -251,19 +251,19 @@ class CreativeTemplate(BaseTemplate):
         /* The iconic arched header behind photo */
         .cr-arch-container {{
             background: var(--cr-theme);
-            margin: 0 -18px 18px -18px;
-            padding: 24px 14px 20px 14px;
-            border-radius: 0 0 55px 55px;
+            margin: 0 -16px 14px -16px;
+            padding: 18px 12px 14px 12px;
+            border-radius: 0 0 46px 46px;
             text-align: center;
             box-shadow: inset 0 -3px 8px rgba(0,0,0,0.06);
             transition: background 0.25s ease;
         }}
 
         .cr-photo {{
-            width: 106px;
-            height: 126px;
+            width: 98px;
+            height: 118px;
             object-fit: cover;
-            border-radius: 16px;
+            border-radius: 14px;
             display: inline-block;
             border: 3px solid #ffffff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.14);
@@ -271,9 +271,9 @@ class CreativeTemplate(BaseTemplate):
         }}
 
         .cr-photo-placeholder {{
-            width: 106px;
-            height: 126px;
-            border-radius: 16px;
+            width: 98px;
+            height: 118px;
+            border-radius: 14px;
             background: #ffffff;
             display: inline-flex;
             align-items: center;
@@ -283,40 +283,40 @@ class CreativeTemplate(BaseTemplate):
         }}
 
         .cr-sb-title {{
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.8px;
             color: #0f172a;
-            border-bottom: 2.5px solid var(--cr-theme);
+            border-bottom: 2px solid var(--cr-theme);
             display: inline-block;
             padding-bottom: 2px;
-            margin-top: 16px;
-            margin-bottom: 8px;
+            margin-top: 12px;
+            margin-bottom: 6px;
         }}
 
         /* Contact Bar in Top of Main Column */
         .cr-contact-bar {{
             display: flex;
             flex-wrap: wrap;
-            gap: 6px 8px;
+            gap: 4px 6px;
             align-items: center;
-            margin-top: 6px;
-            margin-bottom: 14px;
-            padding-bottom: 12px;
+            margin-top: 3px;
+            margin-bottom: 8px;
+            padding-bottom: 7px;
             border-bottom: 1px solid #f1f5f9;
         }}
 
         .cr-c-item {{
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            font-size: 10.5px;
+            gap: 4px;
+            font-size: 10px;
             font-weight: 500;
             color: #334155;
             background: #f8fafc;
-            padding: 3px 8px;
-            border-radius: 6px;
+            padding: 2px 7px;
+            border-radius: 5px;
             border: 1px solid #e2e8f0;
         }}
 
@@ -393,61 +393,67 @@ class CreativeTemplate(BaseTemplate):
             width: 72%;
             background-color: #ffffff;
             color: #1e293b;
-            padding: 32px 36px;
+            padding: 20px 26px;
             vertical-align: top;
             box-sizing: border-box;
         }}
 
         .cr-name {{
-            font-size: 32px;
+            font-size: 29px;
             font-weight: 800;
             color: #0f172a;
             letter-spacing: -0.5px;
             text-transform: uppercase;
-            line-height: 1.1;
-            margin: 0 0 3px 0;
+            line-height: 1.05;
+            margin: 0 0 2px 0;
         }}
 
         .cr-title {{
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--cr-dark);
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
             border-bottom: 2px solid var(--cr-theme);
             display: inline-block;
-            padding-bottom: 2px;
-            margin-bottom: 6px;
+            padding-bottom: 1px;
+            margin-bottom: 4px;
             transition: all 0.2s ease;
         }}
 
         .cr-summary {{
-            font-size: 12px;
+            font-size: 11.5px;
             color: #475569;
             text-align: justify;
-            line-height: 1.55;
-            margin-bottom: 18px;
+            line-height: 1.45;
+            margin-top: 2px;
+            margin-bottom: 8px;
+        }}
+
+        .cr-summary p {{
+            margin: 0;
+            padding: 0;
         }}
 
         .cr-section-title {{
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 800;
             color: #0f172a;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            border-bottom: 2.5px solid var(--cr-theme);
+            border-bottom: 2px solid var(--cr-theme);
             display: inline-block;
-            padding-bottom: 2px;
-            margin-top: 16px;
-            margin-bottom: 10px;
+            padding-bottom: 1px;
+            margin-top: 10px;
+            margin-bottom: 6px;
             transition: border-color 0.2s ease;
         }}
 
         .cr-entry {{
-            margin-bottom: 14px;
+            margin-bottom: 9px;
             page-break-inside: avoid;
-            border-left: 2.5px solid var(--cr-theme);
-            padding-left: 12px;
+            border-left: 2px solid var(--cr-theme);
+            padding-left: 10px;
             margin-left: 1px;
             transition: border-color 0.2s ease;
         }}
@@ -478,39 +484,41 @@ class CreativeTemplate(BaseTemplate):
 
         .cr-bullets {{
             list-style-type: disc;
-            margin-left: 16px;
-            font-size: 11.5px;
+            margin-left: 15px;
+            font-size: 11px;
             color: #334155;
-            line-height: 1.5;
+            line-height: 1.42;
         }}
 
         .cr-bullets li {{
-            margin-bottom: 2px;
+            margin-bottom: 1.5px;
         }}
 
         .cr-tech {{
-            font-size: 11px;
+            font-size: 10.5px;
             color: #64748b;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }}
 
         .cr-tech-tag {{
-            font-size: 10.5px;
+            font-size: 10px;
             background: var(--cr-light);
             color: var(--cr-deep);
-            padding: 1.5px 7px;
+            padding: 1px 6px;
             border-radius: 4px;
             display: inline-block;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             font-weight: 600;
             transition: all 0.2s ease;
         }}
 
         .cr-desc {{
-            font-size: 11.5px;
-            color: #334155;
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.4;
             margin-top: 2px;
-            line-height: 1.45;
+            margin-bottom: 0;
+            text-align: justify;
         }}
 
         .cr-link {{
