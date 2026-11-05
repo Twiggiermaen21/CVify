@@ -173,6 +173,15 @@ async def serve_index():
     with open(template_path, "r", encoding="utf-8") as f:
         return f.read()
 
+@app.get("/view-cv", response_class=HTMLResponse)
+@app.get("/preview", response_class=HTMLResponse)
+async def serve_view_cv():
+    if not os.path.isfile(HTML_FILE):
+        cv = get_current_cv()
+        save_cv_to_disk(cv)
+    with open(HTML_FILE, "r", encoding="utf-8") as f:
+        return f.read()
+
 @app.get("/api/cv")
 async def api_get_cv():
     cv = get_current_cv()

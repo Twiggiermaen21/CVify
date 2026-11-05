@@ -630,7 +630,10 @@
             <button class="btn-primary" onclick="downloadDocx()" title="Pobiera gotowy plik Word .docx">
                 Pobierz DOCX
             </button>
-            <button class="btn-outline" onclick="printPdf()" title="Drukuj lub zapisz jako PDF przez okno przeglądarki">
+            <a href="/view-cv" target="_blank" class="btn-outline" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;" title="Otwórz czysty plik CV w nowej karcie (najwyższa jakość wektorowa PDF)">
+                Otwórz pełny plik
+            </a>
+            <button class="btn-outline" onclick="printPdf()" title="Drukuj lub zapisz jako PDF przez nową kartę (wektorowy PDF bez pikseli)">
                 Drukuj / PDF
             </button>
         </div>
@@ -1517,9 +1520,17 @@ ${yamlStr}
         }
 
         function printPdf() {
-            const iframe = document.getElementById('preview-iframe');
-            if (iframe && iframe.contentWindow) {
-                iframe.contentWindow.print();
+            const w = window.open('/view-cv', '_blank');
+            if (w) {
+                w.focus();
+                w.onload = function() {
+                    setTimeout(() => w.print(), 350);
+                };
+            } else {
+                const iframe = document.getElementById('preview-iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.print();
+                }
             }
         }
 

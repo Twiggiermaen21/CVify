@@ -199,8 +199,6 @@ class CreativeTemplate(BaseTemplate):
         skills_sidebar_html = "\n".join(skills_sidebar_blocks)
 
         css = f"""
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
         :root {{
             --cr-theme: {pal['primary']};
             --cr-light: {pal['light']};
@@ -215,7 +213,7 @@ class CreativeTemplate(BaseTemplate):
 
         body {{
             background: #f1f5f9;
-            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
             color: #1e293b;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
@@ -617,6 +615,13 @@ class CreativeTemplate(BaseTemplate):
         {self._css_print_base()}
 
         @media print {{
+            * {{
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }}
+            body, .cv-container, .cr-main, .cr-sidebar {{
+                font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif !important;
+            }}
             body {{
                 background: #ffffff !important;
             }}
@@ -624,11 +629,11 @@ class CreativeTemplate(BaseTemplate):
                 box-shadow: none !important;
                 border: none !important;
                 margin: 0 !important;
+                padding: 0 !important;
                 max-width: 100% !important;
+                width: 100% !important;
             }}
             .cr-arch-container {{
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
                 background-color: var(--cr-theme) !important;
             }}
             .cr-sidebar {{
@@ -637,20 +642,14 @@ class CreativeTemplate(BaseTemplate):
             .cr-c-item {{
                 background-color: #f8fafc !important;
                 border-color: #e2e8f0 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
             }}
             .cr-c-icon, .cr-tech-tag, .cr-pill, .cr-link {{
                 background-color: var(--cr-light) !important;
                 color: var(--cr-deep) !important;
                 border-color: var(--cr-border) !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
             }}
             .cr-sk-dots .dot.on {{
                 background-color: var(--cr-theme) !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
             }}
         }}
         """

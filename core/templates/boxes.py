@@ -149,15 +149,13 @@ class BoxesTemplate(BaseTemplate):
         skills_html = "\n".join(skills_blocks)
 
         css = f"""
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
         {self._css_variables()}
         {self._css_reset()}
         {self._css_common_components()}
 
         body {{
             background: #f1f5f9;
-            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
             color: #1e293b;
             line-height: 1.55;
             -webkit-font-smoothing: antialiased;
