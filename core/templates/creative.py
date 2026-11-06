@@ -246,38 +246,34 @@ class CreativeTemplate(BaseTemplate):
             border-right: 1px solid #edf2f7;
         }}
 
-        /* The iconic arched header behind photo */
-        .cr-arch-container {{
-            background: var(--cr-theme);
-            margin: 0 -16px 14px -16px;
-            padding: 18px 12px 14px 12px;
-            border-radius: 0 0 46px 46px;
+        /* Photo Container (Clean, no colored theme arch background) */
+        .cr-photo-container {{
+            margin: 18px 0 14px 0;
             text-align: center;
-            box-shadow: inset 0 -3px 8px rgba(0,0,0,0.06);
-            transition: background 0.25s ease;
+            background: transparent;
         }}
 
         .cr-photo {{
-            width: 98px;
-            height: 118px;
+            width: 100px;
+            height: 122px;
             object-fit: cover;
-            border-radius: 14px;
+            border-radius: 12px;
             display: inline-block;
-            border: 3px solid #ffffff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+            border: 3.5px solid #ffffff;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.12);
             background: #ffffff;
         }}
 
         .cr-photo-placeholder {{
-            width: 98px;
-            height: 118px;
-            border-radius: 14px;
+            width: 100px;
+            height: 122px;
+            border-radius: 12px;
             background: #ffffff;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border: 3px solid #ffffff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+            border: 3.5px solid #ffffff;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.12);
         }}
 
         .cr-sb-title {{
@@ -633,8 +629,12 @@ class CreativeTemplate(BaseTemplate):
                 max-width: 100% !important;
                 width: 100% !important;
             }}
-            .cr-arch-container {{
-                background-color: var(--cr-theme) !important;
+            .cr-photo-container {{
+                background: transparent !important;
+            }}
+            .cr-photo, .cr-photo-placeholder {{
+                border-color: #ffffff !important;
+                background-color: #ffffff !important;
             }}
             .cr-sidebar {{
                 background-color: #f8fafc !important;
@@ -664,7 +664,7 @@ class CreativeTemplate(BaseTemplate):
             <tr>
                 <!-- LEFT ARCH COLUMN (28%) -->
                 <td class="cr-sidebar">
-                    <div class="cr-arch-container">
+                    <div class="cr-photo-container">
                         {photo_html}
                     </div>
 

@@ -1520,6 +1520,7 @@ ${yamlStr}
         }
 
         function printPdf() {
+            showToast('Wskazówka: Odznacz "Nagłówki i stopki" w oknie druku, aby usunąć datę i nagłówek.');
             const w = window.open('/view-cv', '_blank');
             if (w) {
                 w.focus();
